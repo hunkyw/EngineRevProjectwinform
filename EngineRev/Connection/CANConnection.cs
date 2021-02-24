@@ -194,6 +194,181 @@ namespace EngineRev
 		/// </summary>
 		public static extern UInt32 VCI_Receive(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, IntPtr pReceive, UInt32 Len, Int32 WaitTime);
 
+		/// <summary>
+		/// CAN连接
+		/// </summary>
+		public void CANConnect(uint m_bOpen, uint m_devtype,UInt32 m_devind, UInt32 m_canind)
+		{
+			if (m_bOpen == 1)
+			{
+				VCI_CloseDevice(m_devtype, m_devind);
+				m_bOpen = 0;
+			}
+			else
+			{
+				//m_devtype = m_devtype;设备类型
+
+				//m_devind = m_devind;设备索引号
+				//m_canind = m_canind;地基路CAN
+				if (VCI_OpenDevice(m_devtype, m_devind, 0) == 0)
+				{
+					MessageBox.Show("打开设备失败,请检查设备类型和设备索引号是否正确", "错误",
+							MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return;
+				}
+
+				m_bOpen = 1;
+				VCI_INIT_CONFIG config = new VCI_INIT_CONFIG();
+
+
+
+				config.AccCode = System.Convert.ToUInt32("0x" + "00000000", 16);
+				config.AccMask = System.Convert.ToUInt32("0x" + "FFFFFFFF", 16);
+				config.Timing0 = System.Convert.ToByte("0x" + "00", 16);
+				config.Timing1 = System.Convert.ToByte("0x" + "1C", 16);
+				config.Filter = (Byte) 1 ;
+				config.Mode = (Byte)0;
+
+
+				if (VCI_InitCAN(m_devtype, m_devind, m_canind, ref config) == 0)
+				{
+					MessageBox.Show("初始化设备失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+					return;
+				}
+
+
+			}
+
+		}
+		/// <summary>
+		/// CAN打开
+		/// </summary>
+		public void CANStart(uint m_bOpen, uint m_devtype, UInt32 m_devind, UInt32 m_canind)
+		{
+			uint ret = VCI_StartCAN(m_devtype, m_devind, m_canind);
+			if (ret != 1)
+			{
+				MessageBox.Show("启动失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+		/// <summary>
+		/// CAN停止
+		/// </summary>
+		public void CANStop(uint m_bOpen, uint m_devtype, UInt32 m_devind, UInt32 m_canind)
+		{
+			if (m_bOpen == 0)
+				return;
+			VCI_ResetCAN(m_devtype, m_devind, m_canind);
+		}
+		/// <summary>
+		/// CAN接收 返回str
+		/// </summary>
+		unsafe public void CANRec(uint m_bOpen, uint m_devtype, UInt32 m_devind, UInt32 m_canind, out String str)
+		{
+			UInt32 res = new UInt32();
+			res = VCI_GetReceiveNum(m_devtype, m_devind, m_canind);
+			//if (res == 0)
+				//return 0;
+			//res = VCI_Receive(m_devtype, m_devind, m_canind, ref m_recobj[0],50, 100);
+
+			/////////////////////////////////////
+			UInt32 con_maxlen = 50;
+			IntPtr pt = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(VCI_CAN_OBJ)) * (Int32)con_maxlen);
+
+
+
+
+			res = VCI_Receive(m_devtype, m_devind, m_canind, pt, con_maxlen, 100);
+			////////////////////////////////////////////////////////
+
+			str = "";
+			for (UInt32 i = 0; i < res; i++)
+			{
+				VCI_CAN_OBJ obj = (VCI_CAN_OBJ)Marshal.PtrToStructure((IntPtr)((UInt32)pt + i * Marshal.SizeOf(typeof(VCI_CAN_OBJ))), typeof(VCI_CAN_OBJ));
+
+				str = "接收到数据: ";
+				str += "  帧ID:0x" + System.Convert.ToString((Int32)obj.ID, 16);
+				str += "  帧格式:";
+				if (obj.RemoteFlag == 0)
+					str += "数据帧 ";
+				else
+					str += "远程帧 ";
+				if (obj.ExternFlag == 0)
+					str += "标准帧 ";
+				else
+					str += "扩展帧 ";
+
+				//////////////////////////////////////////
+				if (obj.RemoteFlag == 0)
+				{
+					str += "数据: ";
+					byte len = (byte)(obj.DataLen % 9);
+					byte j = 0;
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[0], 16);
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[1], 16);
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[2], 16);
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[3], 16);
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[4], 16);
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[5], 16);
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[6], 16);
+					if (j++ < len)
+						str += " " + System.Convert.ToString(obj.Data[7], 16);
+
+				}
+
+			}
+			Marshal.FreeHGlobal(pt);
+		}
+
+		unsafe public void CANSend(uint m_bOpen, uint m_devtype, UInt32 m_devind, UInt32 m_canind, byte SendType, byte FrameFormat, byte FrameType, string SendText)
+		{
+			if (m_bOpen == 0)
+				return;
+
+			VCI_CAN_OBJ sendobj = new VCI_CAN_OBJ();
+			//sendobj.Init();
+			sendobj.SendType = SendType;
+			sendobj.RemoteFlag = FrameFormat;
+			sendobj.ExternFlag = FrameType;
+			sendobj.ID = System.Convert.ToUInt32("0x" + SendText, 16);
+			int len = (SendText.Length + 1) / 3;
+			sendobj.DataLen = System.Convert.ToByte(len);
+			String strdata = SendText;
+			int i = -1;
+			if (i++ < len - 1)
+				sendobj.Data[0] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+			if (i++ < len - 1)
+				sendobj.Data[1] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+			if (i++ < len - 1)
+				sendobj.Data[2] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+			if (i++ < len - 1)
+				sendobj.Data[3] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+			if (i++ < len - 1)
+				sendobj.Data[4] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+			if (i++ < len - 1)
+				sendobj.Data[5] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+			if (i++ < len - 1)
+				sendobj.Data[6] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+			if (i++ < len - 1)
+				sendobj.Data[7] = System.Convert.ToByte("0x" + strdata.Substring(i * 3, 2), 16);
+
+			if (VCI_Transmit(m_devtype, m_devind, m_canind, ref sendobj, 1) == 0)
+			{
+				MessageBox.Show("发送失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
 
 	}
+
+
 }
+
