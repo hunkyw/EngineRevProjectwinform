@@ -29,20 +29,61 @@ namespace EngineRev
         /// </summary>
         private void InitializeComponent()
         {
+            this.CANConnect = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.listBoxCANInfo = new System.Windows.Forms.ListBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // CANConnect
+            // 
+            this.CANConnect.Location = new System.Drawing.Point(756, 12);
+            this.CANConnect.Name = "CANConnect";
+            this.CANConnect.Size = new System.Drawing.Size(75, 23);
+            this.CANConnect.TabIndex = 0;
+            this.CANConnect.Text = "CANl连接";
+            this.CANConnect.UseVisualStyleBackColor = true;
+            this.CANConnect.Click += new System.EventHandler(this.CANConnect_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(28, 36);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(172, 407);
+            this.dataGridView1.TabIndex = 1;
+            // 
+            // listBoxCANInfo
+            // 
+            this.listBoxCANInfo.FormattingEnabled = true;
+            this.listBoxCANInfo.ItemHeight = 12;
+            this.listBoxCANInfo.Location = new System.Drawing.Point(222, 415);
+            this.listBoxCANInfo.Name = "listBoxCANInfo";
+            this.listBoxCANInfo.Size = new System.Drawing.Size(609, 28);
+            this.listBoxCANInfo.TabIndex = 2;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1265, 682);
+            this.ClientSize = new System.Drawing.Size(843, 455);
+            this.Controls.Add(this.listBoxCANInfo);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.CANConnect);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Button CANConnect;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ListBox listBoxCANInfo;
     }
 }
 

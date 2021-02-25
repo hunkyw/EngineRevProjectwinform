@@ -137,54 +137,54 @@ namespace EngineRev
 		/// <summary>
 		/// 打开设备
 		/// </summary>
-		public static extern UInt32 VCI_OpenDevice(UInt32 DeviceType, UInt32 DeviceInd, UInt32 Reserved);
+		static extern UInt32 VCI_OpenDevice(UInt32 DeviceType, UInt32 DeviceInd, UInt32 Reserved);
 		[DllImport("controlcan.dll")]
 		/// <summary>
 		/// 关闭设备
 		/// </summary>
-		public static extern UInt32 VCI_CloseDevice(UInt32 DeviceType, UInt32 DeviceInd);
+		static extern UInt32 VCI_CloseDevice(UInt32 DeviceType, UInt32 DeviceInd);
 		[DllImport("controlcan.dll")]
 		/// <summary>
 		/// 设备初始化
 		/// </summary>
-		public static extern UInt32 VCI_InitCAN(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_INIT_CONFIG pInitConfig);
+		static extern UInt32 VCI_InitCAN(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_INIT_CONFIG pInitConfig);
 		[DllImport("controlcan.dll")]
 
-		public static extern UInt32 VCI_ReadBoardInfo(UInt32 DeviceType, UInt32 DeviceInd, ref VCI_BOARD_INFO pInfo);
+		static extern UInt32 VCI_ReadBoardInfo(UInt32 DeviceType, UInt32 DeviceInd, ref VCI_BOARD_INFO pInfo);
 		[DllImport("controlcan.dll")]
-		public static extern UInt32 VCI_ReadErrInfo(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_ERR_INFO pErrInfo);
+		static extern UInt32 VCI_ReadErrInfo(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_ERR_INFO pErrInfo);
 		[DllImport("controlcan.dll")]
-		public static extern UInt32 VCI_ReadCANStatus(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_CAN_STATUS pCANStatus);
+		static extern UInt32 VCI_ReadCANStatus(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_CAN_STATUS pCANStatus);
 
 		[DllImport("controlcan.dll")]
-		public static extern UInt32 VCI_GetReference(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, UInt32 RefType, ref byte pData);
+		static extern UInt32 VCI_GetReference(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, UInt32 RefType, ref byte pData);
 		[DllImport("controlcan.dll")]
-		public static extern UInt32 VCI_SetReference(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, UInt32 RefType, ref byte pData);
+		static extern UInt32 VCI_SetReference(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, UInt32 RefType, ref byte pData);
 
 		[DllImport("controlcan.dll")]
 		/// <summary>
 		/// 获取接受区字节数
 		/// </summary>
-		public static extern UInt32 VCI_GetReceiveNum(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
+		static extern UInt32 VCI_GetReceiveNum(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
 		[DllImport("controlcan.dll")]
-		public static extern UInt32 VCI_ClearBuffer(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
+		static extern UInt32 VCI_ClearBuffer(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
 
 		[DllImport("controlcan.dll")]
 		/// <summary>
 		/// 打开can连接
 		/// </summary>
-		public static extern UInt32 VCI_StartCAN(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
+		static extern UInt32 VCI_StartCAN(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
 		[DllImport("controlcan.dll")]
 		/// <summary>
 		/// 关闭can连接
 		/// </summary>
-		public static extern UInt32 VCI_ResetCAN(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
+		static extern UInt32 VCI_ResetCAN(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
 
 		[DllImport("controlcan.dll")]
 		/// <summary>
 		/// 发送can信息
 		/// </summary>
-		public static extern UInt32 VCI_Transmit(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_CAN_OBJ pSend, UInt32 Len);
+		static extern UInt32 VCI_Transmit(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_CAN_OBJ pSend, UInt32 Len);
 
 		//[DllImport("controlcan.dll")]
 		//static extern UInt32 VCI_Receive(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, ref VCI_CAN_OBJ pReceive, UInt32 Len, Int32 WaitTime);
@@ -192,35 +192,25 @@ namespace EngineRev
 		/// <summary>
 		/// 接受数据
 		/// </summary>
-		public static extern UInt32 VCI_Receive(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, IntPtr pReceive, UInt32 Len, Int32 WaitTime);
+		static extern UInt32 VCI_Receive(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd, IntPtr pReceive, UInt32 Len, Int32 WaitTime);
 
 		/// <summary>
 		/// CAN连接
 		/// </summary>
-		public void CANConnect(uint m_bOpen, uint m_devtype,UInt32 m_devind, UInt32 m_canind)
+		public bool CANConnect( UInt32 m_devtype,UInt32 m_devind, UInt32 m_canind)
 		{
-			if (m_bOpen == 1)
-			{
-				VCI_CloseDevice(m_devtype, m_devind);
-				m_bOpen = 0;
-			}
-			else
-			{
-				//m_devtype = m_devtype;设备类型
 
+				//m_devtype = m_devtype;设备类型
 				//m_devind = m_devind;设备索引号
 				//m_canind = m_canind;地基路CAN
 				if (VCI_OpenDevice(m_devtype, m_devind, 0) == 0)
 				{
-					MessageBox.Show("打开设备失败,请检查设备类型和设备索引号是否正确", "错误",
-							MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					return;
+					//MessageBox.Show("打开设备失败,请检查设备类型和设备索引号是否正确", "错误",
+							//MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return false;
 				}
 
-				m_bOpen = 1;
 				VCI_INIT_CONFIG config = new VCI_INIT_CONFIG();
-
-
 
 				config.AccCode = System.Convert.ToUInt32("0x" + "00000000", 16);
 				config.AccMask = System.Convert.ToUInt32("0x" + "FFFFFFFF", 16);
@@ -232,19 +222,19 @@ namespace EngineRev
 
 				if (VCI_InitCAN(m_devtype, m_devind, m_canind, ref config) == 0)
 				{
-					MessageBox.Show("初始化设备失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					//MessageBox.Show("初始化设备失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
-					return;
+					return false;
 				}
 
-
-			}
-
+				return true;
 		}
+
+		
 		/// <summary>
 		/// CAN打开
 		/// </summary>
-		public void CANStart(uint m_bOpen, uint m_devtype, UInt32 m_devind, UInt32 m_canind)
+		public void CANStart(uint m_devtype, UInt32 m_devind, UInt32 m_canind)
 		{
 			uint ret = VCI_StartCAN(m_devtype, m_devind, m_canind);
 			if (ret != 1)
@@ -255,16 +245,14 @@ namespace EngineRev
 		/// <summary>
 		/// CAN停止
 		/// </summary>
-		public void CANStop(uint m_bOpen, uint m_devtype, UInt32 m_devind, UInt32 m_canind)
+		public void CANStop( uint m_devtype, UInt32 m_devind, UInt32 m_canind)
 		{
-			if (m_bOpen == 0)
-				return;
 			VCI_ResetCAN(m_devtype, m_devind, m_canind);
 		}
 		/// <summary>
 		/// CAN接收 返回str
 		/// </summary>
-		unsafe public void CANRec(uint m_bOpen, uint m_devtype, UInt32 m_devind, UInt32 m_canind, out String str)
+		unsafe public void CANRec(uint m_devtype, UInt32 m_devind, UInt32 m_canind, out String str)
 		{
 			UInt32 res = new UInt32();
 			res = VCI_GetReceiveNum(m_devtype, m_devind, m_canind);
