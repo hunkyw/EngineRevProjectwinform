@@ -243,12 +243,22 @@ namespace EngineRev
 			}
 		}
 		/// <summary>
-		/// CAN停止
+		/// CAN重启
 		/// </summary>
-		public void CANStop( uint m_devtype, UInt32 m_devind, UInt32 m_canind)
+		public void CANRest( uint m_devtype, UInt32 m_devind, UInt32 m_canind)
 		{
 			VCI_ResetCAN(m_devtype, m_devind, m_canind);
 		}
+
+		/// <summary>
+		/// CAN关闭
+		/// </summary>
+		public void CANStop(uint m_devtype, UInt32 m_devind)
+		{
+			VCI_CloseDevice(m_devtype, m_devind);
+		}
+
+		
 		/// <summary>
 		/// CAN接收 返回str
 		/// </summary>

@@ -29,52 +29,61 @@ namespace EngineRev
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.CANConnect = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.EnginedataGridView = new System.Windows.Forms.DataGridView();
             this.listBoxCANInfo = new System.Windows.Forms.ListBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.CANRecData = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.EnginedataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // CANConnect
             // 
-            this.CANConnect.Location = new System.Drawing.Point(756, 12);
+            this.CANConnect.Location = new System.Drawing.Point(1242, 58);
+            this.CANConnect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CANConnect.Name = "CANConnect";
-            this.CANConnect.Size = new System.Drawing.Size(75, 23);
+            this.CANConnect.Size = new System.Drawing.Size(112, 34);
             this.CANConnect.TabIndex = 0;
             this.CANConnect.Text = "CANl连接";
             this.CANConnect.UseVisualStyleBackColor = true;
             this.CANConnect.Click += new System.EventHandler(this.CANConnect_Click);
             // 
-            // dataGridView1
+            // EnginedataGridView
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(28, 36);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(172, 407);
-            this.dataGridView1.TabIndex = 1;
+            this.EnginedataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.EnginedataGridView.Location = new System.Drawing.Point(33, 97);
+            this.EnginedataGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.EnginedataGridView.Name = "EnginedataGridView";
+            this.EnginedataGridView.RowHeadersWidth = 62;
+            this.EnginedataGridView.RowTemplate.Height = 23;
+            this.EnginedataGridView.Size = new System.Drawing.Size(258, 881);
+            this.EnginedataGridView.TabIndex = 1;
             // 
             // listBoxCANInfo
             // 
             this.listBoxCANInfo.FormattingEnabled = true;
-            this.listBoxCANInfo.ItemHeight = 12;
-            this.listBoxCANInfo.Location = new System.Drawing.Point(222, 415);
+            this.listBoxCANInfo.ItemHeight = 18;
+            this.listBoxCANInfo.Location = new System.Drawing.Point(333, 882);
+            this.listBoxCANInfo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listBoxCANInfo.Name = "listBoxCANInfo";
-            this.listBoxCANInfo.Size = new System.Drawing.Size(609, 28);
+            this.listBoxCANInfo.Size = new System.Drawing.Size(1020, 94);
             this.listBoxCANInfo.TabIndex = 2;
+            // 
+            // CANRecData
+            // 
+            this.CANRecData.Tick += new System.EventHandler(this.CANRecData_Tick);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(843, 455);
+            this.ClientSize = new System.Drawing.Size(1596, 1022);
             this.Controls.Add(this.listBoxCANInfo);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.EnginedataGridView);
             this.Controls.Add(this.CANConnect);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EnginedataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -82,8 +91,9 @@ namespace EngineRev
         #endregion
 
         private System.Windows.Forms.Button CANConnect;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView EnginedataGridView;
         private System.Windows.Forms.ListBox listBoxCANInfo;
+        private System.Windows.Forms.Timer CANRecData;
     }
 }
 
