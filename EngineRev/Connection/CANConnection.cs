@@ -45,6 +45,7 @@ namespace EngineRev
 			public fixed byte Reserved[3];
 
 		}
+
 		//3.定义CAN控制器状态的数据类型。
 		public struct VCI_CAN_STATUS
 		{
@@ -165,7 +166,7 @@ namespace EngineRev
 		/// <summary>
 		/// 获取接受区字节数
 		/// </summary>
-		static extern UInt32 VCI_GetReceiveNum(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
+		public static extern UInt32 VCI_GetReceiveNum(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
 		[DllImport("controlcan.dll")]
 		static extern UInt32 VCI_ClearBuffer(UInt32 DeviceType, UInt32 DeviceInd, UInt32 CANInd);
 
@@ -262,7 +263,7 @@ namespace EngineRev
 		/// <summary>
 		/// CAN接收 返回str
 		/// </summary>
-		unsafe public void CANRec(uint m_devtype, UInt32 m_devind, UInt32 m_canind, out String str)
+		unsafe public void CANRec(uint m_devtype, UInt32 m_devind, UInt32 m_canind, out String str, out VCI_CAN_OBJ cd)
 		{
 			UInt32 res = new UInt32();
 			res = VCI_GetReceiveNum(m_devtype, m_devind, m_canind);
@@ -279,14 +280,16 @@ namespace EngineRev
 
 			res = VCI_Receive(m_devtype, m_devind, m_canind, pt, con_maxlen, 100);
 			////////////////////////////////////////////////////////
-
+			
 			str = "";
+			cd = new VCI_CAN_OBJ();
 			for (UInt32 i = 0; i < res; i++)
 			{
 				VCI_CAN_OBJ obj = (VCI_CAN_OBJ)Marshal.PtrToStructure((IntPtr)((UInt32)pt + i * Marshal.SizeOf(typeof(VCI_CAN_OBJ))), typeof(VCI_CAN_OBJ));
-
+				
 				str = "接收到数据: ";
 				str += "  帧ID:0x" + System.Convert.ToString((Int32)obj.ID, 16);
+
 				str += "  帧格式:";
 				if (obj.RemoteFlag == 0)
 					str += "数据帧 ";
@@ -321,6 +324,7 @@ namespace EngineRev
 						str += " " + System.Convert.ToString(obj.Data[7], 16);
 
 				}
+				cd = obj;
 
 			}
 			Marshal.FreeHGlobal(pt);

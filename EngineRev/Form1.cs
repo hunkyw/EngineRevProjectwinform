@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using static EngineRev.CANConnection;
 
 namespace EngineRev
 {
@@ -39,18 +39,14 @@ namespace EngineRev
             {
                 try
                 {
-
                     da.CANConnect(m_devtype, m_devind, m_canind);
                     da.CANStart( m_devtype, m_devind, m_canind);
                     m_bOpen = 1;
                     m_recover = 1;
-
-
                 }
                 catch
                 {
                     MessageBox.Show("CAN初始化设备失败", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
                     return;
                 }
             }
@@ -67,10 +63,12 @@ namespace EngineRev
         private void CANRecData_Tick(object sender, EventArgs e)
         {
             string str = "";
-            da.CANRec(m_devtype, m_devind, m_canind,out str);
+            da.CANRec(m_devtype, m_devind, m_canind, out str, out VCI_CAN_OBJ cd);
 
             listBoxCANInfo.Items.Add(str);
             listBoxCANInfo.SelectedIndex = listBoxCANInfo.Items.Count - 1;
+
+
 
         }
 
