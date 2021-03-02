@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EngineRev.Viewmodel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -59,16 +60,27 @@ namespace EngineRev
             CANRecData.Enabled = m_bOpen == 1 ? true : false;
 
         }
-
+        CANtransNum cnm = new CANtransNum();
+        Int32 CANID = 0x00F0F00F;
+        int buff1 = 1;
+        int buff2 = 2;
+        int NoID = 0;
+        List<EnginerRevView> EngRevView = new List<EnginerRevView>();
         private void CANRecData_Tick(object sender, EventArgs e)
         {
             string str = "";
             da.CANRec(m_devtype, m_devind, m_canind, out str, out VCI_CAN_OBJ cd);
-
+            VCI_CAN_OBJ cs = new VCI_CAN_OBJ();
+            cs = cd;
             listBoxCANInfo.Items.Add(str);
             listBoxCANInfo.SelectedIndex = listBoxCANInfo.Items.Count - 1;
 
+            int EnginerRevNum = cnm.CANtrans( CANID, buff1, buff2,cs);
 
+            ++NoID;
+
+            EngRevView.Add(new EnginerRevView() { NoId = NoID, EnginerRev = EnginerRevNum });
+            EnginedataGridView.DataSource = EngRevView;
 
         }
 
