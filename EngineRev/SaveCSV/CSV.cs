@@ -11,16 +11,15 @@ namespace EngineRev.SaveCSV
         /// <summary>
         /// 保存CSV文件
         /// </summary>
-        public void SaveCSV(string Path, string TestNO, int[]NoID,double[]EngineRev)
+        public void SaveCSV(string Path, string TestNO, int NoID,double EngineRev)
         {
             string fileName = Path + "\\" + TestNO + "data" + ".csv";//TestNO为自定义字符串
             StreamWriter fileWriter = new StreamWriter(fileName, true, Encoding.ASCII);//TRUE 存在则添加，不存在则新建   
-            for(int i =1; i<= NoID.Length;i++)
-            {
-                fileWriter.Write(NoID[i]+",");
-                fileWriter.Write(EngineRev[i]+",");
-                fileWriter.Write("\r\n");
-            }
+
+            fileWriter.Write(NoID+",");
+            fileWriter.Write(EngineRev+",");
+            fileWriter.Write("\r\n");
+
             fileWriter.Flush();
             fileWriter.Close();
         }

@@ -30,9 +30,9 @@ namespace EngineRev
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.CANConnect = new System.Windows.Forms.Button();
             this.EnginedataGridView = new System.Windows.Forms.DataGridView();
             this.listBoxCANInfo = new System.Windows.Forms.ListBox();
@@ -40,6 +40,7 @@ namespace EngineRev
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.SaveDataClicks = new System.Windows.Forms.Button();
             this.OpenTest = new System.Windows.Forms.Button();
+            this.SaveCSV = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.EnginedataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
@@ -82,16 +83,16 @@ namespace EngineRev
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(321, 97);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(1032, 744);
             this.chart1.TabIndex = 3;
             this.chart1.Text = "chart1";
@@ -118,11 +119,23 @@ namespace EngineRev
             this.OpenTest.UseVisualStyleBackColor = true;
             this.OpenTest.Click += new System.EventHandler(this.OpenTest_Click);
             // 
+            // SaveCSV
+            // 
+            this.SaveCSV.Location = new System.Drawing.Point(1411, 329);
+            this.SaveCSV.Margin = new System.Windows.Forms.Padding(4);
+            this.SaveCSV.Name = "SaveCSV";
+            this.SaveCSV.Size = new System.Drawing.Size(112, 34);
+            this.SaveCSV.TabIndex = 18;
+            this.SaveCSV.Text = "保存数据";
+            this.SaveCSV.UseVisualStyleBackColor = true;
+            this.SaveCSV.Click += new System.EventHandler(this.SaveCSV_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1596, 1022);
+            this.Controls.Add(this.SaveCSV);
             this.Controls.Add(this.OpenTest);
             this.Controls.Add(this.SaveDataClicks);
             this.Controls.Add(this.chart1);
@@ -146,6 +159,7 @@ namespace EngineRev
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Button SaveDataClicks;
         private System.Windows.Forms.Button OpenTest;
+        private System.Windows.Forms.Button SaveCSV;
     }
 }
 

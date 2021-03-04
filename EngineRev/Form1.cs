@@ -1,4 +1,5 @@
-﻿using EngineRev.Viewmodel;
+﻿using EngineRev.SaveCSV;
+using EngineRev.Viewmodel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,6 +70,7 @@ namespace EngineRev
         int buff2 = 2;//数据位置2
         int NoID = 0;
         List<EnginerRevView> EngRevView = new List<EnginerRevView>();
+        CSV csv1 = new CSV();
         private void CANRecData_Tick(object sender, EventArgs e)
         {
             string str = "";
@@ -101,13 +103,25 @@ namespace EngineRev
                 FoldPath = foldPath;
             }
 
-        }
+            
 
+        }
+        int TestNo = 0;
         private void OpenTest_Click(object sender, EventArgs e)
         {
-
+            ++TestNo;
             CANRecData.Enabled = m_bOpen1 == 1 ? true : false;
             OpenTest.Text = m_bOpen == 1 ? "开始测试" : "结束测试";
+            csv1.SetCSVPath(FoldPath, Convert.ToString(TestNo));
+        }
+
+        private void SaveCSV_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < EngRevView.Count; i++)
+            {
+                csv1.SaveCSV(FoldPath, Convert.ToString(TestNo), EngRevView[i].NoId, EngRevView[i].EnginerRev);
+            }
+
         }
     }
 }
