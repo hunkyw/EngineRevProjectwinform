@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -20,6 +21,8 @@ namespace EngineRev
 
 
         UInt32 m_bOpen = 0;
+        UInt32 m_bOpen1 = 0;
+
         UInt32 m_devind = 0;
         UInt32 m_canind = 0;
         UInt32 m_recover = 0;
@@ -57,13 +60,13 @@ namespace EngineRev
                 da.CANRest(m_devtype, m_devind, m_canind);
             }
             CANConnect.Text = m_bOpen == 1 ? "断开CAN连接" : "启动CAN连接";
-            CANRecData.Enabled = m_bOpen == 1 ? true : false;
+            //CANRecData.Enabled = m_bOpen == 1 ? true : false;
 
         }
         CANtransNum cnm = new CANtransNum();
-        Int32 CANID = 0x00F0F00F;
-        int buff1 = 1;
-        int buff2 = 2;
+        Int32 CANID = 0x00F0F00F;//CAN ID初始化
+        int buff1 = 1;//数据位置1
+        int buff2 = 2;//数据位置2
         int NoID = 0;
         List<EnginerRevView> EngRevView = new List<EnginerRevView>();
         private void CANRecData_Tick(object sender, EventArgs e)
@@ -83,8 +86,28 @@ namespace EngineRev
             EnginedataGridView.DataSource = EngRevView;
 
         }
+        private string FoldPath = "D:\\";//储存路径
+        private void SaveDataClicks_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "请选择文件路径";
 
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string foldPath = dialog.SelectedPath;
+                DirectoryInfo theFolder = new DirectoryInfo(foldPath);
 
+                //theFolder 包含文件路径
+                FoldPath = foldPath;
+            }
 
+        }
+
+        private void OpenTest_Click(object sender, EventArgs e)
+        {
+
+            CANRecData.Enabled = m_bOpen1 == 1 ? true : false;
+            OpenTest.Text = m_bOpen == 1 ? "开始测试" : "结束测试";
+        }
     }
 }
